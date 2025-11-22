@@ -10,7 +10,7 @@ import json
 import logging
 import random
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 import boto3
 from botocore.config import Config
@@ -200,9 +200,13 @@ def generate_ticket() -> Dict[str, Any]:
         "customer_id": f"CUST-{random.randint(1000, 9999)}",
         "subject": subject,
         "body": body,
-        "created_at": datetime.utcnow().isoformat() + "Z",
+        "created_at": int(datetime.now(timezone.utc).timestamp()),
         "priority": random.choice(["low", "medium", "high", "critical"]),
-        "channel": random.choice(["email", "web", "mobile", "chat"])
+        "metadata": {
+            "source": random.choice(["email", "web", "api", "chat"]),
+            "language": "en",
+            "tags": []
+        }
     }
 
     return ticket
