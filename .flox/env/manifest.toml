@@ -1,0 +1,121 @@
+version = 1
+
+[install]
+# Core tools
+localstack.pkg-path = "localstack"
+kubectl.pkg-path = "kubectl"
+gum.pkg-path = "gum"
+awscli2.pkg-path = "awscli2"
+
+# Python runtime
+python3.pkg-path = "python313Full"
+python3.priority = 1
+
+# PyTorch stack (generic for now - will switch to AVX2-optimized builds when available)
+# Target: flox/pytorch-python313-cpu-avx2 once published
+pytorch.pkg-path = "python313Packages.pytorch"
+pytorch.systems = ["x86_64-linux", "x86_64-darwin"]
+pytorch.priority = 2
+
+torchvision.pkg-path = "python313Packages.torchvision"
+torchvision.systems = ["x86_64-linux", "x86_64-darwin"]
+torchvision.priority = 3
+
+# Note: torchaudio not in python313Packages yet, will add when AVX2 builds ready
+
+# ML/NLP libraries
+transformers.pkg-path = "python313Packages.transformers"
+sentence-transformers.pkg-path = "python313Packages.sentence-transformers"
+tokenizers.pkg-path = "python313Packages.tokenizers"
+
+# AWS SDK
+boto3.pkg-path = "python313Packages.boto3"
+botocore.pkg-path = "python313Packages.botocore"
+
+# Utilities
+pydantic.pkg-path = "python313Packages.pydantic"
+pytest.pkg-path = "python313Packages.pytest"
+
+[services]
+localstack.command = "localstack start -d"
+localstack.is-daemon = true
+localstack.shutdown.command = "localstack stop"
+
+[vars]
+# LocalStack
+AWSCLILOCAL_PACKAGE="awscli-local"
+USE_LOCALSTACK="true"
+AWS_ENDPOINT_URL="http://localhost:4566"
+AWS_REGION="us-east-1"
+AWS_ACCESS_KEY_ID="test"
+AWS_SECRET_ACCESS_KEY="test"
+
+# ML Model caching
+MODEL_CACHE_DIR="$FLOX_ENV_CACHE/models"
+TRANSFORMERS_CACHE="$FLOX_ENV_CACHE/models/transformers"
+HF_HOME="$FLOX_ENV_CACHE/models/huggingface"
+
+# Python
+PYTHONUNBUFFERED="1"
+
+[hook]
+on-activate = '''
+# Make a spinner we can skip this in CI
+function with_spinner() {
+  if [[ "$FLOX_ENVS_TESTING" == "1" ]]; then
+    bash -c "$2"
+  else
+    gum spin \
+      --show-error \
+      --spinner line \
+      --title "$1" \
+        -- bash -c "$2"
+  fi
+}
+
+# Create cache directories
+mkdir -p "$FLOX_ENV_CACHE/models/"{transformers,huggingface}
+mkdir -p "$FLOX_ENV_CACHE/localstack"
+
+# Make a venv
+export PYTHON_DIR="$FLOX_ENV_CACHE/python"
+if [ ! -d "$PYTHON_DIR" ]; then
+  with_spinner "Creating venv in $PYTHON_DIR..." "python -m venv \"$PYTHON_DIR\""
+  echo "✅ Created venv"
+fi
+
+(
+  source "$PYTHON_DIR/bin/activate"
+  with_spinner "Installing $AWSCLILOCAL_PACKAGE..." "pip install $AWSCLILOCAL_PACKAGE"
+  echo "✅ Installed $AWSCLILOCAL_PACKAGE"
+)
+
+if [[ "$FLOX_ACTIVATE_START_SERVICES" == "true" ]]; then
+  gum style --border double --margin "1 2" --padding "1 4" \
+    'Localstack may take a few moments to start.' '' \
+    'Once it starts, see available services with:' \
+    '  localstack status services'
+else
+  gum style --border double --margin "1 2" --padding "1 4" \
+    'You may need to start localstack using:' \
+    '  flox services start'
+fi
+'''
+
+[profile]
+bash = '''
+source "$PYTHON_DIR/bin/activate"
+'''
+fish = '''
+source "$PYTHON_DIR/bin/activate.fish"
+'''
+tcsh = '''
+source "$PYTHON_DIR/bin/activate.csh"
+'''
+zsh = '''
+source "$PYTHON_DIR/bin/activate"
+'''
+
+[options]
+systems = ["aarch64-darwin", "aarch64-linux", "x86_64-darwin", "x86_64-linux"]
+

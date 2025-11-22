@@ -1,0 +1,1673 @@
+{
+  "lockfile-version": 1,
+  "manifest": {
+    "version": 1,
+    "install": {
+      "awscli2": {
+        "pkg-path": "awscli2"
+      },
+      "boto3": {
+        "pkg-path": "python313Packages.boto3"
+      },
+      "botocore": {
+        "pkg-path": "python313Packages.botocore"
+      },
+      "gum": {
+        "pkg-path": "gum"
+      },
+      "kubectl": {
+        "pkg-path": "kubectl"
+      },
+      "localstack": {
+        "pkg-path": "localstack"
+      },
+      "pydantic": {
+        "pkg-path": "python313Packages.pydantic"
+      },
+      "pytest": {
+        "pkg-path": "python313Packages.pytest"
+      },
+      "python3": {
+        "pkg-path": "python313Full",
+        "priority": 1
+      },
+      "pytorch": {
+        "pkg-path": "python313Packages.pytorch",
+        "priority": 2,
+        "systems": [
+          "x86_64-linux",
+          "x86_64-darwin"
+        ]
+      },
+      "sentence-transformers": {
+        "pkg-path": "python313Packages.sentence-transformers"
+      },
+      "tokenizers": {
+        "pkg-path": "python313Packages.tokenizers"
+      },
+      "torchvision": {
+        "pkg-path": "python313Packages.torchvision",
+        "priority": 3,
+        "systems": [
+          "x86_64-linux",
+          "x86_64-darwin"
+        ]
+      },
+      "transformers": {
+        "pkg-path": "python313Packages.transformers"
+      }
+    },
+    "vars": {
+      "AWSCLILOCAL_PACKAGE": "awscli-local",
+      "AWS_ACCESS_KEY_ID": "test",
+      "AWS_ENDPOINT_URL": "http://localhost:4566",
+      "AWS_REGION": "us-east-1",
+      "AWS_SECRET_ACCESS_KEY": "test",
+      "HF_HOME": "$FLOX_ENV_CACHE/models/huggingface",
+      "MODEL_CACHE_DIR": "$FLOX_ENV_CACHE/models",
+      "PYTHONUNBUFFERED": "1",
+      "TRANSFORMERS_CACHE": "$FLOX_ENV_CACHE/models/transformers",
+      "USE_LOCALSTACK": "true"
+    },
+    "hook": {
+      "on-activate": "# Make a spinner we can skip this in CI\nfunction with_spinner() {\n  if [[ \"$FLOX_ENVS_TESTING\" == \"1\" ]]; then\n    bash -c \"$2\"\n  else\n    gum spin \\\n      --show-error \\\n      --spinner line \\\n      --title \"$1\" \\\n        -- bash -c \"$2\"\n  fi\n}\n\n# Create cache directories\nmkdir -p \"$FLOX_ENV_CACHE/models/\"{transformers,huggingface}\nmkdir -p \"$FLOX_ENV_CACHE/localstack\"\n\n# Make a venv\nexport PYTHON_DIR=\"$FLOX_ENV_CACHE/python\"\nif [ ! -d \"$PYTHON_DIR\" ]; then\n  with_spinner \"Creating venv in $PYTHON_DIR...\" \"python -m venv \\\"$PYTHON_DIR\\\"\"\n  echo \"✅ Created venv\"\nfi\n\n(\n  source \"$PYTHON_DIR/bin/activate\"\n  with_spinner \"Installing $AWSCLILOCAL_PACKAGE...\" \"pip install $AWSCLILOCAL_PACKAGE\"\n  echo \"✅ Installed $AWSCLILOCAL_PACKAGE\"\n)\n\nif [[ \"$FLOX_ACTIVATE_START_SERVICES\" == \"true\" ]]; then\n  gum style --border double --margin \"1 2\" --padding \"1 4\" \\\n    'Localstack may take a few moments to start.' '' \\\n    'Once it starts, see available services with:' \\\n    '  localstack status services'\nelse\n  gum style --border double --margin \"1 2\" --padding \"1 4\" \\\n    'You may need to start localstack using:' \\\n    '  flox services start'\nfi\n"
+    },
+    "profile": {
+      "bash": "source \"$PYTHON_DIR/bin/activate\"\n",
+      "zsh": "source \"$PYTHON_DIR/bin/activate\"\n",
+      "fish": "source \"$PYTHON_DIR/bin/activate.fish\"\n",
+      "tcsh": "source \"$PYTHON_DIR/bin/activate.csh\"\n"
+    },
+    "options": {
+      "systems": [
+        "aarch64-darwin",
+        "aarch64-linux",
+        "x86_64-darwin",
+        "x86_64-linux"
+      ]
+    },
+    "services": {
+      "localstack": {
+        "command": "localstack start -d",
+        "is-daemon": true,
+        "shutdown": {
+          "command": "localstack stop"
+        }
+      }
+    }
+  },
+  "packages": [
+    {
+      "attr_path": "awscli2",
+      "broken": false,
+      "derivation": "/nix/store/jvjxgqsly322g0hv2b2jf9nw0b1avywa-awscli2-2.27.61.drv",
+      "description": "Unified tool to manage your AWS services",
+      "install_id": "awscli2",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "awscli2-2.27.61",
+      "pname": "awscli2",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:07.705012Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.27.61",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/nnilj4gpj6h8xf78m61bqnqax0wx7h49-awscli2-2.27.61-dist",
+        "out": "/nix/store/vr4yw1p1w5vsqyv9d6xg51kia7qm6rc1-awscli2-2.27.61"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "awscli2",
+      "broken": false,
+      "derivation": "/nix/store/xplvmfgbpnp66fjhpvpzkcwir2i6vxy2-awscli2-2.27.61.drv",
+      "description": "Unified tool to manage your AWS services",
+      "install_id": "awscli2",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "awscli2-2.27.61",
+      "pname": "awscli2",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:18.350145Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.27.61",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/gamzvp0cas36a18qiapsi571a6sinnd0-awscli2-2.27.61-dist",
+        "out": "/nix/store/5vniflq9z2nhkv5281k2cwjmnkiq1lw5-awscli2-2.27.61"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "awscli2",
+      "broken": false,
+      "derivation": "/nix/store/28nnkdwi2w7dmpl45zi2cbb8bi652qmx-awscli2-2.27.61.drv",
+      "description": "Unified tool to manage your AWS services",
+      "install_id": "awscli2",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "awscli2-2.27.61",
+      "pname": "awscli2",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:23.957341Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.27.61",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/m0yrx2x5rcxb2391a97jp67yrhv0zkgx-awscli2-2.27.61-dist",
+        "out": "/nix/store/vs2p7x8rrw57zavc3kxm7bn3b3scvwys-awscli2-2.27.61"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "awscli2",
+      "broken": false,
+      "derivation": "/nix/store/6f6mv9mi9kb5nx28rvcjm401d7zqmnqb-awscli2-2.27.61.drv",
+      "description": "Unified tool to manage your AWS services",
+      "install_id": "awscli2",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "awscli2-2.27.61",
+      "pname": "awscli2",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:33:44.207233Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.27.61",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/bxqlxlm95hgfarh5akcm20svn2wpkyd9-awscli2-2.27.61-dist",
+        "out": "/nix/store/rq6b6lixkg2i0vc2a2q0xqfmvx0a4src-awscli2-2.27.61"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.boto3",
+      "broken": false,
+      "derivation": "/nix/store/asi5qjk0ig20dchh1xz2iprw3l48l3y3-python3.13-boto3-1.38.32.drv",
+      "description": "AWS SDK for Python",
+      "install_id": "boto3",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-boto3-1.38.32",
+      "pname": "boto3",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:27.573993Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3.13-boto3-1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/18cki9zmjj1acg1yzp98h70x9g7n3lwh-python3.13-boto3-1.38.32-dist",
+        "out": "/nix/store/6qi7fk5dpgh01jk9mr6fhhivajkc6nbg-python3.13-boto3-1.38.32"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.boto3",
+      "broken": false,
+      "derivation": "/nix/store/zm5y56xpas7d3893yv4n7lyn8q6yxb78-python3.13-boto3-1.38.32.drv",
+      "description": "AWS SDK for Python",
+      "install_id": "boto3",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-boto3-1.38.32",
+      "pname": "boto3",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:55.359167Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3.13-boto3-1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/024cwamrjip6dbzlb3zc1i0zwsq8gdbq-python3.13-boto3-1.38.32-dist",
+        "out": "/nix/store/nbsl2ajjxwj7gbnqld509q14nnqawah0-python3.13-boto3-1.38.32"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.boto3",
+      "broken": false,
+      "derivation": "/nix/store/pavg0va9cm782vd3q84f4bghrliq7gg1-python3.13-boto3-1.38.32.drv",
+      "description": "AWS SDK for Python",
+      "install_id": "boto3",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-boto3-1.38.32",
+      "pname": "boto3",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:44.097901Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3.13-boto3-1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/ks8rnlp77xijdxh7k6iga6950kdrwy5x-python3.13-boto3-1.38.32-dist",
+        "out": "/nix/store/b944agl6128smz11chg3g73nvg20ff1d-python3.13-boto3-1.38.32"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.boto3",
+      "broken": false,
+      "derivation": "/nix/store/5bs880hf1bpg4yvavrdcgqsnzjw28694-python3.13-boto3-1.38.32.drv",
+      "description": "AWS SDK for Python",
+      "install_id": "boto3",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-boto3-1.38.32",
+      "pname": "boto3",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:26.101285Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3.13-boto3-1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/gdwxzgyjnms6qy9hy5j97i9bkllbszsj-python3.13-boto3-1.38.32-dist",
+        "out": "/nix/store/2bgmp1i0s6gw040aknfcw4205cgvw3vn-python3.13-boto3-1.38.32"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.botocore",
+      "broken": false,
+      "derivation": "/nix/store/ri3g8awfcjsvhc1ypi4g155n0q5nqqa0-python3.13-botocore-1.38.32.drv",
+      "description": "Low-level interface to a growing number of Amazon Web Services",
+      "install_id": "botocore",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-botocore-1.38.32",
+      "pname": "botocore",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:27.576169Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/1v373g4r9gzi6kaxv6phynrsbfpabybn-python3.13-botocore-1.38.32-dist",
+        "out": "/nix/store/y31j0r3mbqn3g645vsc3lvmvqkalm6jg-python3.13-botocore-1.38.32"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.botocore",
+      "broken": false,
+      "derivation": "/nix/store/ynxgcnx15h0iimq1186mcf6sv4cxa0xg-python3.13-botocore-1.38.32.drv",
+      "description": "Low-level interface to a growing number of Amazon Web Services",
+      "install_id": "botocore",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-botocore-1.38.32",
+      "pname": "botocore",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:55.362177Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/87zrj5lyy0l4py637rzvh718910wbnpd-python3.13-botocore-1.38.32-dist",
+        "out": "/nix/store/4pc4mk1ddkgrzvkwydwvak5gqh2vflyf-python3.13-botocore-1.38.32"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.botocore",
+      "broken": false,
+      "derivation": "/nix/store/3m24d862x21j7pd2si84y2mf4fnxv3gy-python3.13-botocore-1.38.32.drv",
+      "description": "Low-level interface to a growing number of Amazon Web Services",
+      "install_id": "botocore",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-botocore-1.38.32",
+      "pname": "botocore",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:44.100153Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/8z82v887jxgjsr7jbv944k56kf1lkqj5-python3.13-botocore-1.38.32-dist",
+        "out": "/nix/store/145phcn3h3zb32a8bm38d1anf7fnmkjw-python3.13-botocore-1.38.32"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.botocore",
+      "broken": false,
+      "derivation": "/nix/store/wcg2bfrarvklrh2dpjg4b2xzs4hrzcwd-python3.13-botocore-1.38.32.drv",
+      "description": "Low-level interface to a growing number of Amazon Web Services",
+      "install_id": "botocore",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-botocore-1.38.32",
+      "pname": "botocore",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:26.104618Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.38.32",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/ph0hi0jn454lkrsf1vf6zv0jb73wkk25-python3.13-botocore-1.38.32-dist",
+        "out": "/nix/store/wq2yvqdxkp0xfivzx8n2qv1lw025rz7d-python3.13-botocore-1.38.32"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/pg3cdd51qdyvz1y4f40sppnzi48w6kql-gum-0.16.2.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "gum-0.16.2",
+      "pname": "gum",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:09.199823Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/s9w5fifwbcl92x3r55r9lbiwmlyrlfig-gum-0.16.2"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/h7k81r0f4j065q10xnl4h3dib8vyw8qj-gum-0.16.2.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "gum-0.16.2",
+      "pname": "gum",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:20.297161Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/7z4r5akxz40nfji1jz4bdk99k1biwdkc-gum-0.16.2"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/yv03ry4f80wp5cgxdb1d13l67n89lrv0-gum-0.16.2.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "gum-0.16.2",
+      "pname": "gum",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:25.062566Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/r6q70l6jqmgmmv8br9dpvh23c4lqkapq-gum-0.16.2"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/1rl9xkxjazii9zr7ci73sjk20dp4v2yp-gum-0.16.2.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "gum-0.16.2",
+      "pname": "gum",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:33:46.465501Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/ghqbmfsmdhccms652yx3n0mkj86jlz8r-gum-0.16.2"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "kubectl",
+      "broken": false,
+      "derivation": "/nix/store/h67n1ib20f7slmnmx85gdr1rj28hspwj-kubectl-1.33.3.drv",
+      "description": "Kubernetes CLI",
+      "install_id": "kubectl",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "kubectl-1.33.3",
+      "pname": "kubectl",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:09.707436Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.33.3",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "convert": "/nix/store/x225vv21kfp2pgi3hxac4cpz60qlh6nv-kubectl-1.33.3-convert",
+        "man": "/nix/store/2mckzmqkc5y3bh66sx2ij6sy2l1yy5s3-kubectl-1.33.3-man",
+        "out": "/nix/store/k5hj0mxpv84w7xzx2z4wc06r4hg1ccwj-kubectl-1.33.3"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "kubectl",
+      "broken": false,
+      "derivation": "/nix/store/rk8q7f2066dyzczk9hkdr1b2d265k8gi-kubectl-1.33.3.drv",
+      "description": "Kubernetes CLI",
+      "install_id": "kubectl",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "kubectl-1.33.3",
+      "pname": "kubectl",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:21.957061Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.33.3",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "convert": "/nix/store/1ahkazwv31h3irkxpzazg20kpn3kngbz-kubectl-1.33.3-convert",
+        "man": "/nix/store/5npib1jfzm5mnv2ri6lv3z1l2pxhp8lr-kubectl-1.33.3-man",
+        "out": "/nix/store/cclissn11ab1rw49qybz8q31631n3m9x-kubectl-1.33.3"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "kubectl",
+      "broken": false,
+      "derivation": "/nix/store/00y7g39cprxlc6p42pqfy154jz39jbfz-kubectl-1.33.3.drv",
+      "description": "Kubernetes CLI",
+      "install_id": "kubectl",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "kubectl-1.33.3",
+      "pname": "kubectl",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:25.585997Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.33.3",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "convert": "/nix/store/x74dqs19xz986l140bjn15awxf62dkys-kubectl-1.33.3-convert",
+        "man": "/nix/store/9r8lxjhv229w8c2gf0kbwsfjl9jcv6y2-kubectl-1.33.3-man",
+        "out": "/nix/store/qhvbci1vbd66884yza8d8sr3xn08v5ar-kubectl-1.33.3"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "kubectl",
+      "broken": false,
+      "derivation": "/nix/store/mzmikvkishj77932rnjqwpl0rv5binpp-kubectl-1.33.3.drv",
+      "description": "Kubernetes CLI",
+      "install_id": "kubectl",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "kubectl-1.33.3",
+      "pname": "kubectl",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:33:48.285333Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.33.3",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "convert": "/nix/store/sj77h1x39z09mmq6rv1cjmpj6gg9gylf-kubectl-1.33.3-convert",
+        "man": "/nix/store/w38d510ixf5ijs8z4j6c2yiinqk8ddx8-kubectl-1.33.3-man",
+        "out": "/nix/store/vpx0zzs0hazp7k9byys204jl805ksa2y-kubectl-1.33.3"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "localstack",
+      "broken": false,
+      "derivation": "/nix/store/bm7wvp3w5w3v5cymax6jqx86qqxgq0p3-localstack-4.5.0.drv",
+      "description": "Fully functional local Cloud stack",
+      "install_id": "localstack",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "localstack-4.5.0",
+      "pname": "localstack",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:10.402162Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.5.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/rc35kfqafg8f1hd6m7rcpa4975d9lp19-localstack-4.5.0-dist",
+        "out": "/nix/store/dhy8ryblrrivnc89ihbp9kq2p29pld2g-localstack-4.5.0"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "localstack",
+      "broken": false,
+      "derivation": "/nix/store/fv9zgr07lyf8dnyg4r6q56jyi5xr4z11-localstack-4.5.0.drv",
+      "description": "Fully functional local Cloud stack",
+      "install_id": "localstack",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "localstack-4.5.0",
+      "pname": "localstack",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:26.804240Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.5.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/mmras3yk6swi8y7a7xlkq85k1ws5yn9h-localstack-4.5.0-dist",
+        "out": "/nix/store/9fgrjjg3hsi665rmyjp713jdff1xd0pa-localstack-4.5.0"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "localstack",
+      "broken": false,
+      "derivation": "/nix/store/a100zii1nxmql50hbl9vavg4j0rg5cj0-localstack-4.5.0.drv",
+      "description": "Fully functional local Cloud stack",
+      "install_id": "localstack",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "localstack-4.5.0",
+      "pname": "localstack",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:26.303586Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.5.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/11fic82i603qbc03r796aigm2c3214nn-localstack-4.5.0-dist",
+        "out": "/nix/store/7d6mg82nrjkx8p83rbdmsh2f7c1yvvwy-localstack-4.5.0"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "localstack",
+      "broken": false,
+      "derivation": "/nix/store/49379c3nx7gldiqadbfxhf607rfzynm0-localstack-4.5.0.drv",
+      "description": "Fully functional local Cloud stack",
+      "install_id": "localstack",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "localstack-4.5.0",
+      "pname": "localstack",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:33:54.184449Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.5.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/q2aw0hv3j1s7is2szgza5piryf45cr4k-localstack-4.5.0-dist",
+        "out": "/nix/store/xrd7qcnk8yjjjyf26m4y3xw3rx88jxdy-localstack-4.5.0"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pydantic",
+      "broken": false,
+      "derivation": "/nix/store/rwwgzpbp0g5d10vvn2qffn3jq938p08x-python3.13-pydantic-2.11.7.drv",
+      "description": "Data validation and settings management using Python type hinting",
+      "install_id": "pydantic",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pydantic-2.11.7",
+      "pname": "pydantic",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:33.235392Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.11.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/nc8fixfjczzfs4s9x97iwb7sn5drfa0l-python3.13-pydantic-2.11.7-dist",
+        "out": "/nix/store/dkaqc5sfbnbdwdh1zflpiwan47yb2jd1-python3.13-pydantic-2.11.7"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pydantic",
+      "broken": false,
+      "derivation": "/nix/store/yvi75px9lp0vhdsjx3hpzjl75abq71q6-python3.13-pydantic-2.11.7.drv",
+      "description": "Data validation and settings management using Python type hinting",
+      "install_id": "pydantic",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pydantic-2.11.7",
+      "pname": "pydantic",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:50:03.494456Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.11.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/b7ih1dws8qyrq479my95ky45lvqab61s-python3.13-pydantic-2.11.7-dist",
+        "out": "/nix/store/jf64dz5q7ps8lqnbag39x727rsf4600s-python3.13-pydantic-2.11.7"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pydantic",
+      "broken": false,
+      "derivation": "/nix/store/f6bvb1fdwikqmz258w471zv5l8nsc740-python3.13-pydantic-2.11.7.drv",
+      "description": "Data validation and settings management using Python type hinting",
+      "install_id": "pydantic",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pydantic-2.11.7",
+      "pname": "pydantic",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:49.935655Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.11.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/7z91xv7xzcl0k8s73vn5g7fz1wq9mcpk-python3.13-pydantic-2.11.7-dist",
+        "out": "/nix/store/9ps5miz77q9z8b2sxk9vkhk5hdcs576a-python3.13-pydantic-2.11.7"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pydantic",
+      "broken": false,
+      "derivation": "/nix/store/p7pa65imm9711pkwkrj7dvkns0y70f5a-python3.13-pydantic-2.11.7.drv",
+      "description": "Data validation and settings management using Python type hinting",
+      "install_id": "pydantic",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pydantic-2.11.7",
+      "pname": "pydantic",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:34.944853Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.11.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/lirkc6qqra6948mbck9lf49ci003cgn0-python3.13-pydantic-2.11.7-dist",
+        "out": "/nix/store/wa8b4x0vsvxz1dvgwnm9gdwhvba7ka70-python3.13-pydantic-2.11.7"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pytest",
+      "broken": false,
+      "derivation": "/nix/store/j764fcj3s6sxhxw91apnczi2333wkpfk-python3.13-pytest-8.3.5.drv",
+      "description": "Framework for writing tests",
+      "install_id": "pytest",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pytest-8.3.5",
+      "pname": "pytest",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:34.092925Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "8.3.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/1dkkcf6b5iihyqlc52y23j227xilkgaz-python3.13-pytest-8.3.5-dist",
+        "out": "/nix/store/s8fyrhxln9cds1fckd37vazh5xfpknhi-python3.13-pytest-8.3.5",
+        "testout": "/nix/store/n818v53vj5xkxzklhq06valaa337nb9g-python3.13-pytest-8.3.5-testout"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pytest",
+      "broken": false,
+      "derivation": "/nix/store/idkx2r9mapan5bnp79njzjgklind11c6-python3.13-pytest-8.3.5.drv",
+      "description": "Framework for writing tests",
+      "install_id": "pytest",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pytest-8.3.5",
+      "pname": "pytest",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:50:04.737208Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "8.3.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/2hs6pfdfl5j8zg5ra6fwalzrpgb2nmw1-python3.13-pytest-8.3.5-dist",
+        "out": "/nix/store/kmyxbspnal8zpwvq2l2njhrv7l5ypk4b-python3.13-pytest-8.3.5",
+        "testout": "/nix/store/lhzzbqfnzp4m23svc796nl8x1rdfrss9-python3.13-pytest-8.3.5-testout"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pytest",
+      "broken": false,
+      "derivation": "/nix/store/wnyp16zkf5k9k7yxxg7hhhwfc08g100s-python3.13-pytest-8.3.5.drv",
+      "description": "Framework for writing tests",
+      "install_id": "pytest",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pytest-8.3.5",
+      "pname": "pytest",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:50.819974Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "8.3.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/s6kybyhk98cabasx6vbajqb6k5ha1r1c-python3.13-pytest-8.3.5-dist",
+        "out": "/nix/store/yg255zhf3pfwrljqmy430804wri7a2b1-python3.13-pytest-8.3.5",
+        "testout": "/nix/store/z97x0ym05ixg5mv6qdazn5dn98cvymmp-python3.13-pytest-8.3.5-testout"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.pytest",
+      "broken": false,
+      "derivation": "/nix/store/bai4zzy84m0174hrvfra15xilszlq6k2-python3.13-pytest-8.3.5.drv",
+      "description": "Framework for writing tests",
+      "install_id": "pytest",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-pytest-8.3.5",
+      "pname": "pytest",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:36.262940Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "8.3.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/pdhr9spicksfgmg0rdv08dqsryqv9pah-python3.13-pytest-8.3.5-dist",
+        "out": "/nix/store/irg9b8cr3rxqkmgvalddzh5ps6lxzva3-python3.13-pytest-8.3.5",
+        "testout": "/nix/store/10gx6jxy4g68jdkmw781rzq2hif9imij-python3.13-pytest-8.3.5-testout"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Full",
+      "broken": false,
+      "derivation": "/nix/store/8xg50vmd0qzksd6ryyl1hswpwqqm3zz4-python3-3.13.5.drv",
+      "description": "High-level dynamically-typed programming language",
+      "install_id": "python3",
+      "license": "Python-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3-3.13.5",
+      "pname": "python313Full",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:26.576327Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3-3.13.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/fdgqvcsdlqjgzww2p17sy91vvx73cl7j-python3-3.13.5"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 1
+    },
+    {
+      "attr_path": "python313Full",
+      "broken": false,
+      "derivation": "/nix/store/pvd30191pkqqhw444wi7r81s4a00niq9-python3-3.13.5.drv",
+      "description": "High-level dynamically-typed programming language",
+      "install_id": "python3",
+      "license": "Python-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3-3.13.5",
+      "pname": "python313Full",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:49:53.921860Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3-3.13.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "debug": "/nix/store/j9bqd7hismpyqsd48sd9r824fs8wxld1-python3-3.13.5-debug",
+        "out": "/nix/store/imjii7yg48sisx3bz5va5cminczbq6r6-python3-3.13.5"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 1
+    },
+    {
+      "attr_path": "python313Full",
+      "broken": false,
+      "derivation": "/nix/store/0547y4qqi52siyw7awbwms5nn82z30r9-python3-3.13.5.drv",
+      "description": "High-level dynamically-typed programming language",
+      "install_id": "python3",
+      "license": "Python-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3-3.13.5",
+      "pname": "python313Full",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:43.067648Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3-3.13.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/cm73ahxfy47vyxhj6ighqs0p64l31lyh-python3-3.13.5"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 1
+    },
+    {
+      "attr_path": "python313Full",
+      "broken": false,
+      "derivation": "/nix/store/2wwxhrs72wbfxp35jmx9h8rmi18i5s9b-python3-3.13.5.drv",
+      "description": "High-level dynamically-typed programming language",
+      "install_id": "python3",
+      "license": "Python-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3-3.13.5",
+      "pname": "python313Full",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:24.521738Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3-3.13.5",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "debug": "/nix/store/lxka855zb94nlg4ir5y9pi32yqlbzlkv-python3-3.13.5-debug",
+        "out": "/nix/store/kl67434pm6yih34v0bz2ss0f5kzin00i-python3-3.13.5"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 1
+    },
+    {
+      "attr_path": "python313Packages.pytorch",
+      "broken": false,
+      "derivation": "/nix/store/g78bz6jcf0awssyib4k1cjy5nnpk9i77-python3.13-torch-2.7.1.drv",
+      "description": "PyTorch: Tensors and Dynamic neural networks in Python with strong GPU acceleration",
+      "install_id": "pytorch",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-torch-2.7.1",
+      "pname": "pytorch",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:51.356127Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.7.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "cxxdev": "/nix/store/5aa2mlxd19p9w6y6l7qkdd0rkwd99isc-python3.13-torch-2.7.1-cxxdev",
+        "dev": "/nix/store/20bl1xi4zl0vixr6s9ya9zhh1cximqv3-python3.13-torch-2.7.1-dev",
+        "dist": "/nix/store/d7mj15s64ngsndv1q80f9ryr9ck2dkai-python3.13-torch-2.7.1-dist",
+        "lib": "/nix/store/6qlanf44p0cnr7g1afilvyyyyf2zkxrl-python3.13-torch-2.7.1-lib",
+        "out": "/nix/store/2y3cqza5zd0x4qhx2wv719m162gch2dz-python3.13-torch-2.7.1"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 2
+    },
+    {
+      "attr_path": "python313Packages.pytorch",
+      "broken": false,
+      "derivation": "/nix/store/a2b24b778kxbnpk0c1nfl737szyiy2sk-python3.13-torch-2.7.1.drv",
+      "description": "PyTorch: Tensors and Dynamic neural networks in Python with strong GPU acceleration",
+      "install_id": "pytorch",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-torch-2.7.1",
+      "pname": "pytorch",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:37.028746Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "2.7.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "cxxdev": "/nix/store/673v4v0r4zxbzaar70bw7d8w64whfjfm-python3.13-torch-2.7.1-cxxdev",
+        "dev": "/nix/store/4iynvlxfvdbaxg84m4dldv5a1v7c22l0-python3.13-torch-2.7.1-dev",
+        "dist": "/nix/store/kqcn8xv02bwkrd60mzqyn8aibc9c04sv-python3.13-torch-2.7.1-dist",
+        "lib": "/nix/store/awrk54x1m7g0g2rzx8br3gy3jhpd8jwm-python3.13-torch-2.7.1-lib",
+        "out": "/nix/store/npf3qpq8w7mk21l0af6jk5m62wk0nbcg-python3.13-torch-2.7.1"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 2
+    },
+    {
+      "attr_path": "python313Packages.sentence-transformers",
+      "broken": false,
+      "derivation": "/nix/store/6c7nbh8lpq05fcvq7s9ywrpw74jx89d7-python3.13-sentence-transformers-5.0.0.drv",
+      "description": "Multilingual Sentence & Image Embeddings with BERT",
+      "install_id": "sentence-transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-sentence-transformers-5.0.0",
+      "pname": "sentence-transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:35.382265Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "5.0.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/p6lhnf3lw19qv9z9mzshgs1sg264n1kj-python3.13-sentence-transformers-5.0.0-dist",
+        "out": "/nix/store/z160kabllixqdq28n0xk1rl2qlpjjjhq-python3.13-sentence-transformers-5.0.0"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.sentence-transformers",
+      "broken": false,
+      "derivation": "/nix/store/6l4mzavqr9gdhzln3cwkz4311nb1qa3k-python3.13-sentence-transformers-5.0.0.drv",
+      "description": "Multilingual Sentence & Image Embeddings with BERT",
+      "install_id": "sentence-transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-sentence-transformers-5.0.0",
+      "pname": "sentence-transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:50:06.562614Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "5.0.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/jfxcn18kkx8jlcd6iyj0a6f3lc6lw0vw-python3.13-sentence-transformers-5.0.0-dist",
+        "out": "/nix/store/bw34n908i5bw7a57ca1r8c6lywzc17fc-python3.13-sentence-transformers-5.0.0"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.sentence-transformers",
+      "broken": false,
+      "derivation": "/nix/store/rsxgk76vab2cacfy7xp01ii1m3d4vjd8-python3.13-sentence-transformers-5.0.0.drv",
+      "description": "Multilingual Sentence & Image Embeddings with BERT",
+      "install_id": "sentence-transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-sentence-transformers-5.0.0",
+      "pname": "sentence-transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:52.162785Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "5.0.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/aj8glhjbzkngi3sxfhcmxfcj64sly1cz-python3.13-sentence-transformers-5.0.0-dist",
+        "out": "/nix/store/bzd402yal5kr2hw279i94l7kyffj0z9h-python3.13-sentence-transformers-5.0.0"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.sentence-transformers",
+      "broken": false,
+      "derivation": "/nix/store/91kcnyaamcxs0x83wna45ql0f1104mfc-python3.13-sentence-transformers-5.0.0.drv",
+      "description": "Multilingual Sentence & Image Embeddings with BERT",
+      "install_id": "sentence-transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-sentence-transformers-5.0.0",
+      "pname": "sentence-transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:38.204602Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "5.0.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/2prsn6db0f9bby8wgbljkilc100bzhyr-python3.13-sentence-transformers-5.0.0-dist",
+        "out": "/nix/store/xfb0xhnxbxf3sk3xiimnmcynm9kjpzyh-python3.13-sentence-transformers-5.0.0"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.tokenizers",
+      "broken": false,
+      "derivation": "/nix/store/hl9fvsp7z8s4rs2xyjvqdbcz31v19798-python3.13-tokenizers-0.21.3.drv",
+      "description": "Fast State-of-the-Art Tokenizers optimized for Research and Production",
+      "install_id": "tokenizers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-tokenizers-0.21.3",
+      "pname": "tokenizers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:36.415240Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.21.3",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/hhbqkdd74ksxbmgx5idsyqd0dcs7sv7z-python3.13-tokenizers-0.21.3-dist",
+        "out": "/nix/store/p4qmp6sxgqymd4j8xq2a65fykx3h1iss-python3.13-tokenizers-0.21.3"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.tokenizers",
+      "broken": false,
+      "derivation": "/nix/store/i9abcgw0dix4kdm3qkzd12slbkd80hh9-python3.13-tokenizers-0.21.3.drv",
+      "description": "Fast State-of-the-Art Tokenizers optimized for Research and Production",
+      "install_id": "tokenizers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-tokenizers-0.21.3",
+      "pname": "tokenizers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:50:07.953429Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.21.3",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/r7p1kkqs4qyanqjg4nnfq8a9cbxax7l8-python3.13-tokenizers-0.21.3-dist",
+        "out": "/nix/store/h5iildmc723hnj34l4ns0b2icgkrs3fb-python3.13-tokenizers-0.21.3"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.tokenizers",
+      "broken": false,
+      "derivation": "/nix/store/51vf415ndm2cllabvgyb4fr4c09g0j9z-python3.13-tokenizers-0.21.3.drv",
+      "description": "Fast State-of-the-Art Tokenizers optimized for Research and Production",
+      "install_id": "tokenizers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-tokenizers-0.21.3",
+      "pname": "tokenizers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:53.214236Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.21.3",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/5qymiycfpra1q8hbn89isvfdzw7lfl0j-python3.13-tokenizers-0.21.3-dist",
+        "out": "/nix/store/dbimjby9zp61fqhqakja8spych36xs0x-python3.13-tokenizers-0.21.3"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.tokenizers",
+      "broken": false,
+      "derivation": "/nix/store/1k2xbxbad3lg94r1nvzl1g7i7jskm7ni-python3.13-tokenizers-0.21.3.drv",
+      "description": "Fast State-of-the-Art Tokenizers optimized for Research and Production",
+      "install_id": "tokenizers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-tokenizers-0.21.3",
+      "pname": "tokenizers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:39.752130Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.21.3",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/jgnlgc08zvp85k1kb1n7kzx80k3z1y4g-python3.13-tokenizers-0.21.3-dist",
+        "out": "/nix/store/qfn83bbvn5ppzbna9h1aymabkkbdh1ym-python3.13-tokenizers-0.21.3"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.torchvision",
+      "broken": false,
+      "derivation": "/nix/store/cy6cz0jp2h33yqylms8lj8kp9rxagfzm-python3.13-torchvision-0.22.1.drv",
+      "description": "PyTorch vision library",
+      "install_id": "torchvision",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-torchvision-0.22.1",
+      "pname": "torchvision",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:53.261922Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.22.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/xg024n6gqav62rq0sgn4as84lg4x1ayl-python3.13-torchvision-0.22.1-dist",
+        "out": "/nix/store/17qfs94dxq2p6b2a2f24b93zyshq9xyf-python3.13-torchvision-0.22.1"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 3
+    },
+    {
+      "attr_path": "python313Packages.torchvision",
+      "broken": false,
+      "derivation": "/nix/store/0lgmyg3yh8ylac3hsz6p161p02bpqy3i-python3.13-torchvision-0.22.1.drv",
+      "description": "PyTorch vision library",
+      "install_id": "torchvision",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-torchvision-0.22.1",
+      "pname": "torchvision",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:39.831954Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.22.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/6b1pvfx41j4v6qihwy9ydyrj97zq3zyh-python3.13-torchvision-0.22.1-dist",
+        "out": "/nix/store/pv5mjis0v01lxwv0yfw0xajihymchz3x-python3.13-torchvision-0.22.1"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 3
+    },
+    {
+      "attr_path": "python313Packages.transformers",
+      "broken": false,
+      "derivation": "/nix/store/112xq6sld7lljy55sw4xvc1p0wil4l2b-python3.13-transformers-4.54.1.drv",
+      "description": "Natural Language Processing for TensorFlow 2.0 and PyTorch",
+      "install_id": "transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-transformers-4.54.1",
+      "pname": "transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:29:36.502882Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.54.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/7q5k2i8gbd464xrg7whqd019jk8pk99z-python3.13-transformers-4.54.1-dist",
+        "out": "/nix/store/q6b29dip6gj8zh0ijzf9n15lszpca0z3-python3.13-transformers-4.54.1"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.transformers",
+      "broken": false,
+      "derivation": "/nix/store/6k85s3h81wj33cxrysnyc1p69finavbs-python3.13-transformers-4.54.1.drv",
+      "description": "Natural Language Processing for TensorFlow 2.0 and PyTorch",
+      "install_id": "transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-transformers-4.54.1",
+      "pname": "transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T00:50:08.076755Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.54.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/skbjy632rhpal0531kw3dcg31c45g0x6-python3.13-transformers-4.54.1-dist",
+        "out": "/nix/store/2w2lyg1j5m7q4ybvqrhif22d7jkqvfg2-python3.13-transformers-4.54.1"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.transformers",
+      "broken": false,
+      "derivation": "/nix/store/gfnjkwvb6gbhqah8ms8mnmprn5vj1r9n-python3.13-transformers-4.54.1.drv",
+      "description": "Natural Language Processing for TensorFlow 2.0 and PyTorch",
+      "install_id": "transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-transformers-4.54.1",
+      "pname": "transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:09:53.300082Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.54.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/l3qd7yss4142fnk00l8v621nh4kkrf9l-python3.13-transformers-4.54.1-dist",
+        "out": "/nix/store/qgy2hhlzsmdawgcy51xhf2702h6lbdbb-python3.13-transformers-4.54.1"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python313Packages.transformers",
+      "broken": false,
+      "derivation": "/nix/store/jjf1nqdq8890pvz251hv56dlc495ia4n-python3.13-transformers-4.54.1.drv",
+      "description": "Natural Language Processing for TensorFlow 2.0 and PyTorch",
+      "install_id": "transformers",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=94def634a20494ee057c76998843c015909d6311",
+      "name": "python3.13-transformers-4.54.1",
+      "pname": "transformers",
+      "rev": "94def634a20494ee057c76998843c015909d6311",
+      "rev_count": 837094,
+      "rev_date": "2025-07-31T05:30:45Z",
+      "scrape_date": "2025-08-02T01:34:39.889678Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "4.54.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "dist": "/nix/store/455ndkb0v8zd3fnm3pimv8i663k5fl9q-python3.13-transformers-4.54.1-dist",
+        "out": "/nix/store/nm8qr0kwg0r8zqgwjamk4r2dlpk7ag80-python3.13-transformers-4.54.1"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    }
+  ]
+}
