@@ -62,7 +62,7 @@ in stdenv.mkDerivation {
     cp -r src $out/lib/python3.13/site-packages/
 
     # Create executable wrapper
-    cat > $out/bin/ticket-processor << 'EOF'
+    cat > $out/bin/ticket-processor << EOF
     #!${pythonEnv}/bin/python
     import sys
     sys.path.insert(0, "${pythonEnv}/lib/python3.13/site-packages")
