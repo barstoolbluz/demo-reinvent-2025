@@ -41,6 +41,12 @@ localstack.command = "localstack start -d"
 localstack.is-daemon = true
 localstack.shutdown.command = "localstack stop"
 
+[include]
+environments = [
+    { remote = "barstoolbluz/reinvent-demo-ticket-generator" },
+    { remote = "barstoolbluz/reinvent-demo-ticket-processor" }
+]
+
 [vars]
 # LocalStack
 AWSCLILOCAL_PACKAGE="awscli-local"
