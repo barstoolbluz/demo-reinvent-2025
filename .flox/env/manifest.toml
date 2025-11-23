@@ -132,6 +132,12 @@ if [[ "$FLOX_ACTIVATE_START_SERVICES" == "true" ]]; then
           make setup 2>&1 | grep -E "(✓|✗|Error)" || true
           make seed 2>&1 | grep -E "(✓|✗|Uploaded)" || true
           echo "✅ Resources configured"
+        elif [ -f "$FLOX_ENV/share/setup/Makefile" ]; then
+          cd "$FLOX_ENV/share/setup"
+          make setup 2>&1 | grep -E "(✓|✗|Error)" || true
+          make seed 2>&1 | grep -E "(✓|✗|Uploaded)" || true
+          cd "$FLOX_ENV_PROJECT"
+          echo "✅ Resources configured"
         else
           echo "⚠️  No Makefile found - skipping setup"
         fi
@@ -277,6 +283,14 @@ if [[ "$FLOX_ACTIVATE_START_SERVICES" == "true" ]]; then
           make setup 2>&1 | grep -E "(✓|✗|Error)" || true
           make seed 2>&1 | grep -E "(✓|✗|Uploaded)" || true
           echo "✅ Resources configured"
+        elif [ -f "$FLOX_ENV/share/setup/Makefile" ]; then
+          cd "$FLOX_ENV/share/setup"
+          make setup 2>&1 | grep -E "(✓|✗|Error)" || true
+          make seed 2>&1 | grep -E "(✓|✗|Uploaded)" || true
+          cd "$FLOX_ENV_PROJECT"
+          echo "✅ Resources configured"
+        else
+          echo "⚠️  No Makefile found - skipping setup"
         fi
         break
       fi

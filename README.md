@@ -81,8 +81,6 @@ pythonEnv = python313.withPackages (ps: with ps; [
    chmod +x $out/bin/ticket-generator
    ```
 
-**Key Design Choice:** Uses heredoc without single quotes (`<< EOF` not `<< 'EOF'`) to ensure `$out` variable expansion works correctly. This was a critical bug fix - single quotes would prevent path substitution, causing runtime import errors.
-
 #### Source Code
 
 **Main File:** `src/generator/ticket_generator.py` (272 lines)
@@ -129,7 +127,7 @@ ticket = {
 }
 ```
 
-**Important:** Uses `datetime.now(timezone.utc).timestamp()` (not deprecated `utcnow()`) and produces Unix timestamp integer (not ISO string) to match the `RawTicket` Pydantic schema.
+**Note:** Produces Unix timestamp integer to match the `RawTicket` Pydantic schema.
 
 #### Usage
 
@@ -296,8 +294,6 @@ pythonEnv = python313.withPackages (ps: with ps; [
    chmod +x $out/bin/ticket-processor
    ```
 
-**Critical Fix Applied:** Changed from `<< 'EOF'` to `<< EOF` (no single quotes) to allow `$out` variable expansion. Single quotes caused literal `"$out"` string in the path, breaking imports at runtime.
-
 **Package Size:** ~2+ GB with all ML dependencies (PyTorch, transformers, models)
 
 #### Source Code
@@ -381,7 +377,7 @@ pythonEnv = python313.withPackages (ps: with ps; [
        enrichment: EnrichmentData
    ```
 
-**Schema Compatibility Note:** The `created_at` field is defined as `int` (Unix timestamp), not string. The ticket generator was updated to match this schema.
+**Note:** The `created_at` field is defined as `int` (Unix timestamp).
 
 #### Usage
 
@@ -563,18 +559,6 @@ flox activate --start-services
 ## Troubleshooting
 
 ### Common Issues
-
-**Issue:** `ModuleNotFoundError: No module named 'src'`
-**Cause:** Heredoc used single quotes preventing `$out` expansion
-**Fix:** Rebuild package with corrected Nix expression (no single quotes)
-
-**Issue:** `Input should be a valid integer, unable to parse string as an integer`
-**Cause:** Old tickets generated before schema fix (ISO string instead of Unix timestamp)
-**Fix:** Clear old data and regenerate:
-```bash
-awslocal sqs purge-queue --queue-url $(awslocal sqs get-queue-url --queue-name ticket-processing-queue --query 'QueueUrl' --output text)
-awslocal s3 rm s3://tickets-raw/ --recursive
-```
 
 **Issue:** Services won't start
 **Cause:** LocalStack not running or resources not created

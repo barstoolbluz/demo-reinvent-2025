@@ -38,6 +38,8 @@ in stdenv.mkDerivation {
     "^setup\.py$"
     "^README\.md$"
     "^pyproject\.toml$"
+    "^Makefile$"
+    "^scripts(/.*)?$"
   ];
 
   nativeBuildInputs = [
@@ -57,9 +59,14 @@ in stdenv.mkDerivation {
     # Create package directory
     mkdir -p $out/lib/python3.13/site-packages
     mkdir -p $out/bin
+    mkdir -p $out/share/setup
 
     # Copy Python source code
     cp -r src $out/lib/python3.13/site-packages/
+
+    # Copy setup scripts and Makefile
+    cp Makefile $out/share/setup/
+    cp -r scripts $out/share/setup/
 
     # Create executable wrapper
     cat > $out/bin/ticket-processor << EOF
