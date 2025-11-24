@@ -4,7 +4,7 @@
   python313Packages,
   stdenv,
 }: let
-  version = "0.1.0";
+  version = "0.1.1";
 
   # Python dependencies for the ticket generator
   pythonEnv = python313.withPackages (ps: with ps; [

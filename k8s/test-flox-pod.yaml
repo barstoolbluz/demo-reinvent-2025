@@ -11,9 +11,7 @@ spec:
   containers:
   - name: test
     image: flox/empty:1.0.0  # Stub image (49 bytes) - shim will mount Flox environment
-    env:
-    - name: PYTHONPATH
-      value: "/nix/store/5fbh1sk7h646bkyzskva5b9cliwjh07s-python3-3.13.5-env/lib/python3.13/site-packages:/.flox/run/x86_64-linux.amazon-reinvent-2025-demo-runtime-test.run/lib/python3.13/site-packages:/.flox/cache/python/lib/python3.13/site-packages"
+    env: []
     command:
       - sh
       - -c
