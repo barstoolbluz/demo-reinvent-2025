@@ -4,10 +4,12 @@ metadata:
   name: test-flox-pod
   namespace: reinvent-demo
   annotations:
-    # Reference the FloxHub environment with generation
-    flox.dev/environment: "barstoolbluz/amazon-reinvent-2025-demo-runtime-test:1"
+    # Reference the FloxHub environment
+    flox.dev/environment: "barstoolbluz/amazon-reinvent-2025-demo-runtime-test"
 spec:
   runtimeClassName: flox
+  nodeSelector:
+    flox-runtime: enabled
   containers:
   - name: test
     image: flox/empty:1.0.0  # Stub image (49 bytes) - shim will mount Flox environment
