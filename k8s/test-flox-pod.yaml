@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-flox-pod
+  namespace: reinvent-demo
+  annotations:
+    # Reference the FloxHub environment with generation
+    flox.dev/environment: "barstoolbluz/amazon-reinvent-2025-demo-runtime-test:1"
+spec:
+  runtimeClassName: flox
+  containers:
+  - name: test
+    image: flox/empty:1.0.0  # Stub image (49 bytes) - shim will mount Flox environment
+    env:
+    - name: PYTHONPATH
+      value: "/nix/store/5fbh1sk7h646bkyzskva5b9cliwjh07s-python3-3.13.5-env/lib/python3.13/site-packages:/.flox/run/x86_64-linux.amazon-reinvent-2025-demo-runtime-test.run/lib/python3.13/site-packages:/.flox/cache/python/lib/python3.13/site-packages"
+    command:
+      - sh
+      - -c
+      - |
+        echo "=== Environment Check ==="
+        echo "Python3: $(which python3)"
+        echo "Python3 version: $(python3 --version)"
+        echo "PYTHONPATH: ${PYTHONPATH:-<not set>}"
+        echo ""
+        echo "=== sys.path Check ==="
+        python3 -c "import sys; print('\n'.join(sys.path))"
+        echo ""
+        echo "=== Package Import Test ==="
+        python3 -c "
+        import sys
+        print(f'Python {sys.version}')
+        print('')
+
+        # Try to import packages from custom Flox packages
+        try:
+            import torch
+            print(f'✅ PyTorch {torch.__version__}')
+        except ImportError as e:
+            print(f'❌ PyTorch import failed: {e}')
+
+        try:
+            from transformers import pipeline
+            print('✅ Transformers imported')
+        except ImportError as e:
+            print(f'❌ Transformers import failed: {e}')
+
+        try:
+            import boto3
+            print(f'✅ Boto3 {boto3.__version__}')
+        except ImportError as e:
+            print(f'❌ Boto3 import failed: {e}')
+
+        print('')
+        print('Environment test completed!')
+        "
+
+        # Sleep to keep pod running for inspection
+        sleep 3600
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "500m"
+      limits:
+        memory: "1Gi"
+        cpu: "1000m"
+  restartPolicy: Never
