@@ -4,7 +4,7 @@
   python313Packages,
   stdenv,
 }: let
-  version = "0.1.1";
+  version = "0.1.2";
 
   # Python dependencies for the ticket generator
   pythonEnv = python313.withPackages (ps: with ps; [
@@ -37,11 +37,11 @@ in stdenv.mkDerivation {
     runHook preInstall
 
     # Create package directory
-    mkdir -p $out/lib/python3.13/site-packages
+    mkdir -p $out/lib/python3.13/site-packages/src/generator
     mkdir -p $out/bin
 
-    # Copy Python source code
-    cp -r src $out/lib/python3.13/site-packages/
+    # Copy only generator source code (no common, no processor)
+    cp -r src/generator/* $out/lib/python3.13/site-packages/src/generator/
 
     # Create executable wrapper
     cat > $out/bin/ticket-generator << EOF
