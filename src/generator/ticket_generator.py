@@ -8,6 +8,7 @@ the ticket processor service via SQS event notifications.
 
 import json
 import logging
+import os
 import random
 import time
 from datetime import datetime, timezone
@@ -214,12 +215,15 @@ def generate_ticket() -> Dict[str, Any]:
 
 def upload_ticket_to_s3(ticket: Dict[str, Any], bucket: str) -> None:
     """Upload ticket to S3 bucket."""
+    # Use AWS_ENDPOINT_URL or LOCALSTACK_ENDPOINT env vars, fallback to localhost
+    endpoint_url = os.getenv('AWS_ENDPOINT_URL') or os.getenv('LOCALSTACK_ENDPOINT') or 'http://localhost:4566'
+
     s3 = boto3.client(
         's3',
-        endpoint_url='http://localhost:4566',
-        aws_access_key_id='test',
-        aws_secret_access_key='test',
-        region_name='us-east-1',
+        endpoint_url=endpoint_url,
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', 'test'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', 'test'),
+        region_name=os.getenv('AWS_DEFAULT_REGION', 'us-east-1'),
         config=Config(signature_version='s3v4')
     )
 
